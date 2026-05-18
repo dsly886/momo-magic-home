@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="fortune.page_title">マジック占い</title>
+  <meta name="description" data-i18n-meta="fortune.meta_desc" content="マジック占い — AI占い師に質問して、恋愛、仕事、財運などをカバーするタロット風のリーディングを受けましょう。">
+  <meta name="keywords" content="AI Fortune,AI Tarot,Fortune Telling,Love Tarot,Career Reading,Destiny">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Magic Fortune Teller - momo's Magic House">
+  <meta property="og:description" content="AI tarot reading that reveals the threads of destiny for you.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Magic Fortune Teller - momo's Magic House">
+  <meta name="twitter:description" content="AI tarot reading that reveals the threads of destiny for you.">
+  <link rel="canonical" href="https://momo-magic-house.app/tools/fortune.html">
+  <link rel="stylesheet" href="../css/magic.css">
+  <style>
+    .category-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .category-option {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 16px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--color-text-dim);
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .category-option:hover {
+      border-color: var(--color-magic-purple);
+      color: var(--color-text);
+    }
+    .category-option.selected {
+      border-color: var(--color-magic-purple);
+      background: rgba(124, 58, 237, 0.15);
+      color: #c4a5ff;
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
+    }
+    .fortune-output {
+      font-family: var(--font-magical);
+      line-height: 2;
+    }
+  </style>
+  <!-- hreflang tags -->
+  <link rel="alternate" hreflang="zh" href="/tools/fortune.zh.html">
+  <link rel="alternate" hreflang="en" href="/tools/fortune.html">
+  <link rel="alternate" hreflang="fr" href="/tools/fortune.fr.html">
+  <link rel="alternate" hreflang="de" href="/tools/fortune.de.html">
+  <link rel="alternate" hreflang="ru" href="/tools/fortune.ru.html">
+  <link rel="alternate" hreflang="es" href="/tools/fortune.es.html">
+  <link rel="alternate" hreflang="pt" href="/tools/fortune.pt.html">
+  <link rel="alternate" hreflang="ar" href="/tools/fortune.ar.html">
+  <link rel="alternate" hreflang="ja" href="/tools/fortune.ja.html">
+  <link rel="alternate" hreflang="ko" href="/tools/fortune.ko.html">
+  <link rel="alternate" hreflang="th" href="/tools/fortune.th.html">
+</head>
+<body>
+  <div id="stars-container" class="starry-bg"></div>
+
+  <div class="tool-container">
+    <nav class="tool-nav" aria-label="页面导航">
+      <a href="../index.html" class="back-link" data-i18n="common.back_link" aria-label="Back to Magic House">← マジックハウスに戻る</a>
+    </nav>
+
+    <header class="tool-header">
+      <span class="tool-icon">🔮</span>
+      <h1 data-i18n="fortune.header_title">マジック占い</h1>
+      <p data-i18n="fortune.header_desc">占い師に質問しよう。AIタロットが運命の糸を明らかにします</p>
+    </header>
+
+    <div class="tool-body">
+      <form id="magic-form">
+        <div class="form-group">
+          <label data-i18n="fortune.question_label">🔮 何を占いたいですか？</label>
+          <input type="text" id="question-input" class="magic-input" data-i18n-placeholder="例：私の仕事運はどうですか？恋愛について何かヒントは？..." placeholder="例：私の仕事運はどうですか？恋愛について何かヒントは？..." required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="fortune.category_label">📂 占いのカテゴリー</label>
+          <div class="category-options" id="category-options">
+            <button type="button" class="category-option selected" data-value="general" data-i18n="fortune.category_general">🌟 総合運</button>
+            <button type="button" class="category-option" data-value="love" data-i18n="fortune.category_love">💕 恋愛</button>
+            <button type="button" class="category-option" data-value="career" data-i18n="fortune.category_career">💼 仕事</button>
+            <button type="button" class="category-option" data-value="wealth" data-i18n="fortune.category_wealth">💰 金運</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-magic" id="submit-btn" data-i18n="fortune.submit_btn">🔮 占いを始める</button>
+        </div>
+      </form>
+
+      <div class="magic-loading" id="loading" style="display:none;">
+        <div class="magic-spinner"></div>
+        <span data-i18n="fortune.loading_text">🔮 タロットカードを並べています...</span>
+      </div>
+
+      <div class="result-box glow-purple" id="result-box">
+        <div class="result-title" data-i18n="fortune.result_title">✦ 占い結果 ✦</div>
+        <div class="result-placeholder">
+          <div class="placeholder-icon">🔮</div>
+          <span data-i18n="fortune.placeholder_text">質問を入力して、「占いを始める」をクリック</span>
+        </div>
+        <div class="result-content fortune-output" style="display:none;"></div>
+        <button class="btn-copy" onclick="copyResult()" data-i18n="fortune.copy_btn" style="display:none;">📋 結果をコピー</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/env.js?v=2"></script>
+  <script src="../js/i18n.js?v=2"></script>
+  <script src="../js/magic-utils.js?v=4"></script>
+  <script src="../js/magic-api.js?v=2"></script>
+  <script>
+    let selectedCategory = 'general';
+
+    document.querySelectorAll('.category-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.category-option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedCategory = btn.dataset.value;
+      });
+    });
+
+    function copyResult() {
+      const text = document.querySelector('.result-content').textContent;
+      MagicUtils.copyToClipboard(text);
+    }
+
+    Env.load().then(() => i18n.init());
+
+    MagicUtils.initToolPage({
+      title: 'Magic Fortune Teller',
+      formId: 'magic-form',
+      inputIds: ['question-input'],
+      submitBtnId: 'submit-btn',
+      resultBoxId: 'result-box',
+      loadingId: 'loading',
+      glowColor: 'purple',
+      apiMethod: (question) => MagicAPI.doFortune(question, selectedCategory),
+    });
+  </script>
+</body>
+</html>

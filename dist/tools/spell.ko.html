@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="spell.page_title">주문 연금술 공방</title>
+  <meta name="description" data-i18n-meta="spell.meta_desc" content="주문 연금술 공방 — 당신의 소원과 생각을 화려한 마법 주문으로 바꿔드립니다. 시적, 고풍, 귀여운 스타일 중에서 선택하세요.">
+  <meta name="keywords" content="AI Spell,Magic Spell,Creative Writing,Word Game,Fun Tools">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Spell Alchemy Forge - momo's Magic House">
+  <meta property="og:description" content="Turn your wishes and ideas into magnificent magical incantations.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Spell Alchemy Forge - momo's Magic House">
+  <meta name="twitter:description" content="Turn your wishes and ideas into magnificent magical incantations.">
+  <link rel="canonical" href="https://momo-magic-house.app/tools/spell.html">
+  <link rel="stylesheet" href="../css/magic.css">
+  <style>
+    .type-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .type-option {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 16px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--color-text-dim);
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .type-option:hover {
+      border-color: var(--color-magic-pink);
+      color: var(--color-text);
+    }
+    .type-option.selected {
+      border-color: var(--color-magic-pink);
+      background: rgba(232, 121, 249, 0.15);
+      color: #f5b8ff;
+      box-shadow: 0 0 10px rgba(232, 121, 249, 0.2);
+    }
+    .spell-output {
+      font-family: var(--font-magical);
+      line-height: 2;
+      text-align: center;
+    }
+    .spell-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-gold);
+      margin-bottom: 16px;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+    }
+  </style>
+  <!-- hreflang tags -->
+  <link rel="alternate" hreflang="zh" href="/tools/spell.zh.html">
+  <link rel="alternate" hreflang="en" href="/tools/spell.html">
+  <link rel="alternate" hreflang="fr" href="/tools/spell.fr.html">
+  <link rel="alternate" hreflang="de" href="/tools/spell.de.html">
+  <link rel="alternate" hreflang="ru" href="/tools/spell.ru.html">
+  <link rel="alternate" hreflang="es" href="/tools/spell.es.html">
+  <link rel="alternate" hreflang="pt" href="/tools/spell.pt.html">
+  <link rel="alternate" hreflang="ar" href="/tools/spell.ar.html">
+  <link rel="alternate" hreflang="ja" href="/tools/spell.ja.html">
+  <link rel="alternate" hreflang="ko" href="/tools/spell.ko.html">
+  <link rel="alternate" hreflang="th" href="/tools/spell.th.html">
+</head>
+<body>
+  <div id="stars-container" class="starry-bg"></div>
+
+  <div class="tool-container">
+    <nav class="tool-nav" aria-label="页面导航">
+      <a href="../index.html" class="back-link" data-i18n="common.back_link" aria-label="Back to Magic House">← 매직 하우스로 돌아가기</a>
+    </nav>
+
+    <header class="tool-header">
+      <span class="tool-icon">🪄</span>
+      <h1 data-i18n="spell.header_title">주문 연금술 공방</h1>
+      <p data-i18n="spell.header_desc">당신의 소원과 아이디어를 독특한 마법 주문으로 바꿔드립니다</p>
+    </header>
+
+    <div class="tool-body">
+      <form id="magic-form">
+        <div class="form-group">
+          <label data-i18n="spell.wish_label">💭 어떤 소원을 이루고 싶으신가요?</label>
+          <textarea id="wish-input" class="magic-input" rows="3" data-i18n-placeholder="예: 도전에 용감하게 맞서고 싶습니다, 창의성과 놀라움으로 가득한 삶을 원합니다..." placeholder="예: 도전에 용감하게 맞서고 싶습니다, 창의성과 놀라움으로 가득한 삶을 원합니다..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label data-i18n="spell.type_label">🎨 주문 스타일</label>
+          <div class="type-options" id="type-options">
+            <button type="button" class="type-option selected" data-value="poetic" data-i18n="spell.type_poetic">✨ 시적</button>
+            <button type="button" class="type-option" data-value="ancient" data-i18n="spell.type_ancient">🏮 고풍</button>
+            <button type="button" class="type-option" data-value="cute" data-i18n="spell.type_cute">🎀 귀여운</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-magic" id="submit-btn" data-i18n="spell.submit_btn">🪄 주문 제련</button>
+        </div>
+      </form>
+
+      <div class="magic-loading" id="loading" style="display:none;">
+        <div class="magic-spinner"></div>
+        <span data-i18n="spell.loading_text">🪄 연금술 공방이 주문을 만들고 있습니다...</span>
+      </div>
+
+      <div class="result-box glow-pink" id="result-box">
+        <div class="result-title" data-i18n="spell.result_title">✦ 주문 ✦</div>
+        <div class="result-placeholder">
+          <div class="placeholder-icon">🪄</div>
+          <span data-i18n="spell.placeholder_text">소원을 입력하고 «주문 제련»을 클릭하세요</span>
+        </div>
+        <div class="result-content spell-output" style="display:none;"></div>
+        <button class="btn-copy" onclick="copyResult()" data-i18n="spell.copy_btn" style="display:none;">📋 주문 복사</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/env.js?v=2"></script>
+  <script src="../js/i18n.js?v=2"></script>
+  <script src="../js/magic-utils.js?v=4"></script>
+  <script src="../js/magic-api.js?v=2"></script>
+  <script>
+    let selectedType = 'poetic';
+
+    document.querySelectorAll('.type-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.type-option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedType = btn.dataset.value;
+      });
+    });
+
+    function copyResult() {
+      const text = document.querySelector('.result-content').textContent;
+      MagicUtils.copyToClipboard(text);
+    }
+
+    Env.load().then(() => i18n.init());
+
+    MagicUtils.initToolPage({
+      title: 'Spell Alchemy Forge',
+      formId: 'magic-form',
+      inputIds: ['wish-input'],
+      submitBtnId: 'submit-btn',
+      resultBoxId: 'result-box',
+      loadingId: 'loading',
+      glowColor: 'pink',
+      apiMethod: (text) => MagicAPI.castSpell(text, selectedType),
+    });
+  </script>
+</body>
+</html>

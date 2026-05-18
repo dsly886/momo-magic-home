@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://momo-magic-house.app/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://momo-magic-house.app/tools/story.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://momo-magic-house.app/tools/fortune.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://momo-magic-house.app/tools/spell.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://momo-magic-house.app/tools/wish.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://momo-magic-house.app/tools/dream.html</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>

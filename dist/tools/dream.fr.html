@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="dream.page_title">Interprète de Rêves</title>
+  <meta name="description" data-i18n-meta="dream.meta_desc" content="Interprète de Rêves — Décrivez votre rêve et l'IA révèle sa signification symbolique et ses perspectives spirituelles. Mêle sagesse traditionnelle et psychologie.">
+  <meta name="keywords" content="AI Dream,Dream Interpretation,Dream Analysis,Dream Meaning,Psychology,Subconscious">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Dream Interpreter - momo's Magic House">
+  <meta property="og:description" content="Describe your dream and AI reveals its symbolic meaning and spiritual insights.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Dream Interpreter - momo's Magic House">
+  <meta name="twitter:description" content="Describe your dream and AI reveals its symbolic meaning and spiritual insights.">
+  <link rel="canonical" href="https://momo-magic-house.app/tools/dream.html">
+  <link rel="stylesheet" href="../css/magic.css">
+  <style>
+    .dream-output {
+      font-family: var(--font-magical);
+      line-height: 2;
+    }
+    .dream-input-hint {
+      text-align: center;
+      color: var(--color-text-dim);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+  </style>
+  <!-- hreflang tags -->
+  <link rel="alternate" hreflang="zh" href="/tools/dream.zh.html">
+  <link rel="alternate" hreflang="en" href="/tools/dream.html">
+  <link rel="alternate" hreflang="fr" href="/tools/dream.fr.html">
+  <link rel="alternate" hreflang="de" href="/tools/dream.de.html">
+  <link rel="alternate" hreflang="ru" href="/tools/dream.ru.html">
+  <link rel="alternate" hreflang="es" href="/tools/dream.es.html">
+  <link rel="alternate" hreflang="pt" href="/tools/dream.pt.html">
+  <link rel="alternate" hreflang="ar" href="/tools/dream.ar.html">
+  <link rel="alternate" hreflang="ja" href="/tools/dream.ja.html">
+  <link rel="alternate" hreflang="ko" href="/tools/dream.ko.html">
+  <link rel="alternate" hreflang="th" href="/tools/dream.th.html">
+</head>
+<body>
+  <div id="stars-container" class="starry-bg"></div>
+
+  <div class="tool-container">
+    <nav class="tool-nav" aria-label="页面导航">
+      <a href="../index.html" class="back-link" data-i18n="common.back_link" aria-label="Back to Magic House">← Retour à la Maison Magique</a>
+    </nav>
+
+    <header class="tool-header">
+      <span class="tool-icon">🌙</span>
+      <h1 data-i18n="dream.header_title">Interprète de Rêves</h1>
+      <p data-i18n="dream.header_desc">Décrivez votre rêve, l'IA aide à percer ses mystères et révélations</p>
+    </header>
+
+    <div class="tool-body">
+      <form id="magic-form">
+        <div class="form-group">
+          <label data-i18n="dream.dream_label">🌜 Décrivez votre rêve</label>
+          <textarea id="dream-input" class="magic-input" rows="5" data-i18n-placeholder="Décrivez votre rêve avec le plus de détails possible — qu'avez-vous vu ? Comment vous êtes-vous senti ? Des scènes ou personnes particulières ?
+
+ex. : J'ai rêvé que je courais sur des nuages, entouré d'une lumière dorée, avec un château de cristal au loin..." placeholder="Décrivez votre rêve avec le plus de détails possible — qu'avez-vous vu ? Comment vous êtes-vous senti ? Des scènes ou personnes particulières ?
+
+ex. : J'ai rêvé que je courais sur des nuages, entouré d'une lumière dorée, avec un château de cristal au loin..." required></textarea>
+          <p class="dream-input-hint" data-i18n="dream.dream_hint">Plus vous fournissez de détails, plus l'interprétation est précise ✨</p>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-magic" id="submit-btn" data-i18n="dream.submit_btn">🌙 Interpréter le Rêve</button>
+        </div>
+      </form>
+
+      <div class="magic-loading" id="loading" style="display:none;">
+        <div class="magic-spinner"></div>
+        <span data-i18n="dream.loading_text">🌙 L'interprète de rêves analyse votre rêve...</span>
+      </div>
+
+      <div class="result-box glow-purple" id="result-box">
+        <div class="result-title" data-i18n="dream.result_title">✦ Lecture du Rêve ✦</div>
+        <div class="result-placeholder">
+          <div class="placeholder-icon">🌙</div>
+          <span data-i18n="dream.placeholder_text">Entrez votre rêve, cliquez sur "Interpréter le Rêve" pour voir les résultats</span>
+        </div>
+        <div class="result-content dream-output" style="display:none;"></div>
+        <button class="btn-copy" onclick="copyResult()" data-i18n="dream.copy_btn" style="display:none;">📋 Enregistrer l'Interprétation</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/env.js?v=2"></script>
+  <script src="../js/i18n.js?v=2"></script>
+  <script src="../js/magic-utils.js?v=4"></script>
+  <script src="../js/magic-api.js?v=2"></script>
+  <script>
+    function copyResult() {
+      const text = document.querySelector('.result-content').textContent;
+      MagicUtils.copyToClipboard(text);
+    }
+
+    Env.load().then(() => i18n.init());
+
+    MagicUtils.initToolPage({
+      title: 'Dream Interpreter',
+      formId: 'magic-form',
+      inputIds: ['dream-input'],
+      submitBtnId: 'submit-btn',
+      resultBoxId: 'result-box',
+      loadingId: 'loading',
+      glowColor: 'purple',
+      apiMethod: (dream) => MagicAPI.interpretDream(dream),
+    });
+  </script>
+</body>
+</html>

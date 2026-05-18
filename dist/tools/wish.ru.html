@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="wish.page_title">Колодец Желаний</title>
+  <meta name="description" data-i18n-meta="wish.meta_desc" content="Колодец Желаний — Загадайте желание звёздам, получите поэтический ответ от вселенной. Каждое желание получает ответ, полный тепла и надежды.">
+  <meta name="keywords" content="AI Wish,Wishing Well,Star Wish,Poetic Reply,Emotional Companion,Warm Text">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Wishing Well - momo's Magic House">
+  <meta property="og:description" content="Make a wish upon the stars, receive a poetic reply from the universe.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wishing Well - momo's Magic House">
+  <meta name="twitter:description" content="Make a wish upon the stars, receive a poetic reply from the universe.">
+  <link rel="canonical" href="https://momo-magic-house.app/tools/wish.html">
+  <link rel="stylesheet" href="../css/magic.css">
+  <style>
+    .wish-output {
+      font-family: var(--font-magical);
+      line-height: 2.2;
+      text-align: center;
+    }
+    .wish-output .star-line {
+      color: var(--color-gold);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+    .wish-decoration {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 12px;
+      animation: star-pulse 2s ease-in-out infinite;
+    }
+    @keyframes star-pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+  </style>
+  <!-- hreflang tags -->
+  <link rel="alternate" hreflang="zh" href="/tools/wish.zh.html">
+  <link rel="alternate" hreflang="en" href="/tools/wish.html">
+  <link rel="alternate" hreflang="fr" href="/tools/wish.fr.html">
+  <link rel="alternate" hreflang="de" href="/tools/wish.de.html">
+  <link rel="alternate" hreflang="ru" href="/tools/wish.ru.html">
+  <link rel="alternate" hreflang="es" href="/tools/wish.es.html">
+  <link rel="alternate" hreflang="pt" href="/tools/wish.pt.html">
+  <link rel="alternate" hreflang="ar" href="/tools/wish.ar.html">
+  <link rel="alternate" hreflang="ja" href="/tools/wish.ja.html">
+  <link rel="alternate" hreflang="ko" href="/tools/wish.ko.html">
+  <link rel="alternate" hreflang="th" href="/tools/wish.th.html">
+</head>
+<body>
+  <div id="stars-container" class="starry-bg"></div>
+
+  <div class="tool-container">
+    <nav class="tool-nav" aria-label="页面导航">
+      <a href="../index.html" class="back-link" data-i18n="common.back_link" aria-label="Back to Magic House">← Назад в Волшебный Дом</a>
+    </nav>
+
+    <header class="tool-header">
+      <span class="tool-icon">⭐</span>
+      <h1 data-i18n="wish.header_title">Колодец Желаний</h1>
+      <p data-i18n="wish.header_desc">Загадайте желание звёздам, получите поэтический ответ от космоса</p>
+    </header>
+
+    <div class="tool-body">
+      <form id="magic-form">
+        <div class="form-group">
+          <label data-i18n="wish.wish_label">🌟 Напишите своё желание</label>
+          <textarea id="wish-input" class="magic-input" rows="4" data-i18n-placeholder="Напишите самое искреннее желание...
+например: Я желаю своей семье здоровья и счастья, я надеюсь найти свой путь в жизни..." placeholder="Напишите самое искреннее желание...
+например: Я желаю своей семье здоровья и счастья, я надеюсь найти свой путь в жизни..." required></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-magic" id="submit-btn" data-i18n="wish.submit_btn">⭐ Загадать Желание</button>
+        </div>
+      </form>
+
+      <div class="magic-loading" id="loading" style="display:none;">
+        <div class="magic-spinner"></div>
+        <span data-i18n="wish.loading_text">⭐ Звёзды слушают ваше желание...</span>
+      </div>
+
+      <div class="result-box glow-gold" id="result-box">
+        <div class="wish-decoration" data-i18n="wish.result_decoration">🌙 ⭐ 🌟</div>
+        <div class="result-title" data-i18n="wish.result_title">✦ Ответ Звёзд ✦</div>
+        <div class="result-placeholder">
+          <div class="placeholder-icon">⭐</div>
+          <span data-i18n="wish.placeholder_text">Напишите желание, нажмите «Загадать Желание»</span>
+        </div>
+        <div class="result-content wish-output" style="display:none;"></div>
+        <button class="btn-copy" onclick="copyResult()" data-i18n="wish.copy_btn" style="display:none;">📋 Сохранить Ответ</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/env.js?v=2"></script>
+  <script src="../js/i18n.js?v=2"></script>
+  <script src="../js/magic-utils.js?v=4"></script>
+  <script src="../js/magic-api.js?v=2"></script>
+  <script>
+    function copyResult() {
+      const text = document.querySelector('.result-content').textContent;
+      MagicUtils.copyToClipboard(text);
+    }
+
+    Env.load().then(() => i18n.init());
+
+    MagicUtils.initToolPage({
+      title: 'Wishing Well',
+      formId: 'magic-form',
+      inputIds: ['wish-input'],
+      submitBtnId: 'submit-btn',
+      resultBoxId: 'result-box',
+      loadingId: 'loading',
+      glowColor: 'gold',
+      apiMethod: (wish) => MagicAPI.makeWish(wish),
+    });
+  </script>
+</body>
+</html>

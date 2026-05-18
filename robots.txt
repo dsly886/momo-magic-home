@@ -1,0 +1,4 @@
+# momo的AI魔法屋 - Robots
+User-agent: *
+Allow: /
+Sitemap: https://momo-magic-house.app/sitemap.xml

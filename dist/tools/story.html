@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="story.page_title">AI Story Workshop</title>
+  <meta name="description" data-i18n-meta="story.meta_desc" content="AI Story Workshop — Enter a theme and characters, let AI weave unique magical tales. Supports fantasy, heartwarming, and adventurous styles.">
+  <meta name="keywords" content="AI Story,Story Creation,Magical Tales,Fantasy Stories,AI Writing,Creative Writing">
+  <meta name="robots" content="index, follow">
+  <!-- Open Graph -->
+  <meta property="og:title" content="AI Story Workshop - momo's Magic House">
+  <meta property="og:description" content="Enter a theme and characters, let AI weave unique magical tales.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AI Story Workshop - momo's Magic House">
+  <meta name="twitter:description" content="Enter a theme and characters, let AI weave unique magical tales.">
+  <link rel="canonical" href="https://momo-magic-house.app/tools/story.html">
+  <link rel="stylesheet" href="../css/magic.css">
+  <style>
+    .style-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .style-option {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 16px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--color-text-dim);
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .style-option:hover {
+      border-color: var(--color-magic-blue);
+      color: var(--color-text);
+    }
+    .style-option.selected {
+      border-color: var(--color-magic-blue);
+      background: rgba(74, 108, 247, 0.15);
+      color: #93bbfc;
+      box-shadow: 0 0 10px rgba(74, 108, 247, 0.2);
+    }
+    .story-output {
+      font-family: var(--font-magical);
+      letter-spacing: 0.3px;
+      line-height: 2;
+    }
+  </style>
+  <!-- hreflang tags -->
+  <link rel="alternate" hreflang="zh" href="/tools/story.zh.html">
+  <link rel="alternate" hreflang="en" href="/tools/story.html">
+  <link rel="alternate" hreflang="fr" href="/tools/story.fr.html">
+  <link rel="alternate" hreflang="de" href="/tools/story.de.html">
+  <link rel="alternate" hreflang="ru" href="/tools/story.ru.html">
+  <link rel="alternate" hreflang="es" href="/tools/story.es.html">
+  <link rel="alternate" hreflang="pt" href="/tools/story.pt.html">
+  <link rel="alternate" hreflang="ar" href="/tools/story.ar.html">
+  <link rel="alternate" hreflang="ja" href="/tools/story.ja.html">
+  <link rel="alternate" hreflang="ko" href="/tools/story.ko.html">
+  <link rel="alternate" hreflang="th" href="/tools/story.th.html">
+</head>
+<body>
+  <div id="stars-container" class="starry-bg"></div>
+
+  <div class="tool-container">
+    <nav class="tool-nav" aria-label="页面导航">
+      <a href="../index.html" class="back-link" data-i18n="common.back_link" aria-label="Back to Magic House">← Back to Magic House</a>
+    </nav>
+
+    <header class="tool-header">
+      <span class="tool-icon">📖</span>
+      <h1 data-i18n="story.header_title">AI Story Workshop</h1>
+      <p data-i18n="story.header_desc">Share your ideas, AI weaves one-of-a-kind magical stories for you</p>
+    </header>
+
+    <div class="tool-body">
+      <form id="magic-form">
+        <div class="form-group">
+          <label data-i18n="story.theme_label">📌 Story Theme / Setting</label>
+          <input type="text" id="theme-input" class="magic-input" data-i18n-placeholder="e.g., Moonlight Forest, Undersea Kingdom, Castle in the Clouds..." placeholder="e.g., Moonlight Forest, Undersea Kingdom, Castle in the Clouds..." required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="story.characters_label">👤 Main Characters</label>
+          <input type="text" id="characters-input" class="magic-input" data-i18n-placeholder="e.g., A brave little rabbit, a talking star..." placeholder="e.g., A brave little rabbit, a talking star..." required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="story.style_label">🎭 Story Style</label>
+          <div class="style-options" id="style-options">
+            <button type="button" class="style-option selected" data-value="fantasy" data-i18n="story.style_fantasy">🧙 Fantasy</button>
+            <button type="button" class="style-option" data-value="warm" data-i18n="story.style_warm">🌺 Heartwarming</button>
+            <button type="button" class="style-option" data-value="adventure" data-i18n="story.style_adventure">⚔️ Adventure</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-magic" id="submit-btn" data-i18n="story.submit_btn">✨ Weave a Story</button>
+        </div>
+      </form>
+
+      <div class="magic-loading" id="loading" style="display:none;">
+        <div class="magic-spinner"></div>
+        <span data-i18n="story.loading_text">📖 The bard is weaving a tale...</span>
+      </div>
+
+      <div class="result-box glow-blue" id="result-box">
+        <div class="result-title" data-i18n="story.result_title">✦ Story ✦</div>
+        <div class="result-placeholder">
+          <div class="placeholder-icon">📖</div>
+          <span data-i18n="story.placeholder_text">Enter a theme and characters, click "Weave a Story" to begin</span>
+        </div>
+        <div class="result-content story-output" style="display:none;"></div>
+        <button class="btn-copy" onclick="copyResult()" data-i18n="story.copy_btn" style="display:none;">📋 Copy Story</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/env.js?v=2"></script>
+  <script src="../js/i18n.js?v=2"></script>
+  <script src="../js/magic-utils.js?v=4"></script>
+  <script src="../js/magic-api.js?v=2"></script>
+  <script>
+    let selectedStyle = 'fantasy';
+
+    // Style selector
+    document.querySelectorAll('.style-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.style-option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedStyle = btn.dataset.value;
+      });
+    });
+
+    function copyResult() {
+      const text = document.querySelector('.result-content').textContent;
+      MagicUtils.copyToClipboard(text);
+    }
+
+    Env.load().then(() => i18n.init());
+
+    MagicUtils.initToolPage({
+      title: 'AI Story Workshop',
+      formId: 'magic-form',
+      inputIds: ['theme-input', 'characters-input'],
+      submitBtnId: 'submit-btn',
+      resultBoxId: 'result-box',
+      loadingId: 'loading',
+      glowColor: 'blue',
+      apiMethod: (theme, characters) => MagicAPI.generateStory(theme, characters, selectedStyle),
+    });
+  </script>
+</body>
+</html>

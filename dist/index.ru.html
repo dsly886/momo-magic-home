@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="index.hero_title">Волшебный AI Дом Момо</title>
+  <meta name="description" data-i18n-meta="index.hero_title" content="Волшебный AI Дом Момо">
+  <meta name="keywords" content="AI,魔法,故事创作,占卜,咒语,许愿,解梦,DeepSeek,创意工具">
+  <meta name="robots" content="index, follow">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Momo's AI Magic House - AI Creative Tools">
+  <meta property="og:description" content="Magic-themed AI creative tools collection: Story Workshop, Fortune Teller, Spell Forge, Wishing Well, Dream Interpreter.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Momo's AI Magic House - AI Creative Tools">
+  <meta name="twitter:description" content="Magic-themed AI creative tools collection, powered by DeepSeek AI.">
+  <link rel="canonical" href="https://momo-magic-house.app/">
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Momo's AI Magic House",
+    "alternateName": "Momo's AI Magic House",
+    "description": "A magic-themed AI creative tools collection featuring AI Story Workshop, Magic Fortune Teller, Spell Alchemy Forge, Wishing Well, and Dream Interpreter.",
+    "url": "https://momo-magic-house.app/",
+    "inLanguage": "en"
+  }
+  </script>
+  <link rel="stylesheet" href="css/magic.css">
+  <style>
+    /* === 首页专属样式 === */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      position: relative;
+    }
+
+    .hero .title-glow {
+      font-family: var(--font-magical);
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #e879f9, #4a6cf7, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: title-glow 3s ease-in-out infinite;
+      position: relative;
+      display: inline-block;
+    }
+
+    @keyframes title-glow {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.3)); }
+      50% { filter: drop-shadow(0 0 20px rgba(74, 108, 247, 0.5)); }
+    }
+
+    .hero .title-icon {
+      font-size: 56px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .hero .subtitle {
+      color: var(--color-text-dim);
+      font-size: 16px;
+      margin-top: 12px;
+      letter-spacing: 4px;
+    }
+
+    .hero .magic-line {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--color-magic-pink), var(--color-magic-blue), transparent);
+      margin: 16px auto 0;
+    }
+
+    /* === Tool Grid === */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .tool-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--color-text);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      transition: opacity 0.4s;
+      border-radius: 20px;
+    }
+
+    .tool-card:hover::before {
+      opacity: 1;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .tool-card .card-icon {
+      font-size: 40px;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s;
+    }
+
+    .tool-card:hover .card-icon {
+      transform: scale(1.15) rotate(-5deg);
+    }
+
+    .tool-card .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tool-card .card-desc {
+      font-size: 13px;
+      color: var(--color-text-dim);
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tool-card .card-magic {
+      font-size: 12px;
+      color: var(--color-text-dim);
+      opacity: 0.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Card color themes */
+    .tool-card.card-story:hover {
+      border-color: var(--color-magic-blue);
+      box-shadow: 0 8px 32px rgba(74, 108, 247, 0.25);
+    }
+    .tool-card.card-story::before {
+      background: radial-gradient(circle at center, rgba(74, 108, 247, 0.1), transparent);
+    }
+
+    .tool-card.card-fortune:hover {
+      border-color: var(--color-magic-purple);
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.25);
+    }
+    .tool-card.card-fortune::before {
+      background: radial-gradient(circle at center, rgba(124, 58, 237, 0.1), transparent);
+    }
+
+    .tool-card.card-spell:hover {
+      border-color: var(--color-magic-pink);
+      box-shadow: 0 8px 32px rgba(232, 121, 249, 0.25);
+    }
+    .tool-card.card-spell::before {
+      background: radial-gradient(circle at center, rgba(232, 121, 249, 0.1), transparent);
+    }
+
+    .tool-card.card-wish:hover {
+      border-color: var(--color-gold);
+      box-shadow: 0 8px 32px rgba(251, 191, 36, 0.2);
+    }
+    .tool-card.card-wish::before {
+      background: radial-gradient(circle at center, rgba(251, 191, 36, 0.1), transparent);
+    }
+
+    .tool-card.card-dream:hover {
+      border-color: #a78bfa;
+      box-shadow: 0 8px 32px rgba(167, 139, 250, 0.2);
+    }
+    .tool-card.card-dream::before {
+      background: radial-gradient(circle at center, rgba(167, 139, 250, 0.1), transparent);
+    }
+
+    /* === Footer === */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--color-text-dim);
+      font-size: 13px;
+      opacity: 0.5;
+    }
+
+    /* === Homepage Nav === */
+    .home-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 20px 0;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 600px) {
+      .hero { padding: 40px 16px 30px; }
+      .hero .title-glow { font-size: 32px; }
+      .hero .title-icon { font-size: 40px; }
+      .tool-grid { grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 12px 40px; }
+      .tool-card { padding: 20px 12px; }
+      .tool-card .card-icon { font-size: 30px; }
+      .tool-card .card-title { font-size: 15px; }
+      .tool-card .card-desc { display: none; }
+    }
+
+    @media (max-width: 400px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <!-- hreflang tags -->
+  <link rel="alternate" hreflang="zh" href="/index.zh.html">
+  <link rel="alternate" hreflang="en" href="/index.html">
+  <link rel="alternate" hreflang="fr" href="/index.fr.html">
+  <link rel="alternate" hreflang="de" href="/index.de.html">
+  <link rel="alternate" hreflang="ru" href="/index.ru.html">
+  <link rel="alternate" hreflang="es" href="/index.es.html">
+  <link rel="alternate" hreflang="pt" href="/index.pt.html">
+  <link rel="alternate" hreflang="ar" href="/index.ar.html">
+  <link rel="alternate" hreflang="ja" href="/index.ja.html">
+  <link rel="alternate" hreflang="ko" href="/index.ko.html">
+  <link rel="alternate" hreflang="th" href="/index.th.html">
+</head>
+<body>
+  <!-- Starry Background -->
+  <div id="stars-container" class="starry-bg"></div>
+
+  <!-- Top Navigation -->
+  <nav class="home-nav" aria-label="Site navigation"></nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="title-icon">🏰</span>
+    <h1 class="title-glow" data-i18n="index.hero_title">Волшебный AI Дом Момо</h1>
+    <p class="subtitle" data-i18n="index.hero_subtitle">✨ Зажгите своё воображение с помощью силы ИИ ✨</p>
+    <div class="magic-line"></div>
+  </section>
+
+  <!-- Tool Cards -->
+  <nav class="tool-grid" aria-label="Tool navigation">
+    <a href="tools/story.html" class="tool-card card-story" aria-label="AI Story Workshop - Enter a theme and characters, let AI weave magical tales">
+      <span class="card-icon">📖</span>
+      <span class="card-title" data-i18n="index.card_story_title">AI Мастерская Историй</span>
+      <span class="card-desc" data-i18n="index.card_story_desc">Введите тему и персонажей, позвольте ИИ сплести волшебные истории</span>
+      <span class="card-magic" data-i18n="index.card_story_magic">✦ Фантастические Рассказы ✦</span>
+    </a>
+
+    <a href="tools/fortune.html" class="tool-card card-fortune" aria-label="Magic Fortune Teller - Tarot readings, AI reveals the threads of destiny">
+      <span class="card-icon">🔮</span>
+      <span class="card-title" data-i18n="index.card_fortune_title">Магическая Гадалка</span>
+      <span class="card-desc" data-i18n="index.card_fortune_desc">Расклады Таро — ИИ раскрывает нити судьбы</span>
+      <span class="card-magic" data-i18n="index.card_fortune_magic">✦ Путеводная Звезда ✦</span>
+    </a>
+
+    <a href="tools/spell.html" class="tool-card card-spell" aria-label="Spell Alchemy Forge - Turn your wishes into magnificent magical incantations">
+      <span class="card-icon">🪄</span>
+      <span class="card-title" data-i18n="index.card_spell_title">Алхимическая Кузница Заклинаний</span>
+      <span class="card-desc" data-i18n="index.card_spell_desc">Превратите свои желания в великолепные магические заклинания</span>
+      <span class="card-magic" data-i18n="index.card_spell_magic">✦ Плетение Заклинаний ✦</span>
+    </a>
+
+    <a href="tools/wish.html" class="tool-card card-wish" aria-label="Wishing Well - Make a wish upon a star, receive a poetic reply">
+      <span class="card-icon">⭐</span>
+      <span class="card-title" data-i18n="index.card_wish_title">Колодец Желаний</span>
+      <span class="card-desc" data-i18n="index.card_wish_desc">Загадайте желание на звезду, получите поэтический ответ</span>
+      <span class="card-magic" data-i18n="index.card_wish_magic">✦ Звёздные Желания ✦</span>
+    </a>
+
+    <a href="tools/dream.html" class="tool-card card-dream" aria-label="Dream Interpreter - Describe your dream, AI helps unlock its mysteries">
+      <span class="card-icon">🌙</span>
+      <span class="card-title" data-i18n="index.card_dream_title">Толкователь Снов</span>
+      <span class="card-desc" data-i18n="index.card_dream_desc">Опишите свой сон, ИИ поможет разгадать его тайны</span>
+      <span class="card-magic" data-i18n="index.card_dream_magic">✦ Шёпот Снов ✦</span>
+    </a>
+  </nav>
+
+  <div class="footer">
+    <p data-i18n="common.footer">🏰 Волшебный AI Дом Момо · Работает на DeepSeek</p>
+  </div>
+
+  <script src="js/env.js?v=2"></script>
+  <script src="js/i18n.js?v=2"></script>
+  <script src="js/magic-utils.js?v=4"></script>
+  <script src="js/magic-api.js?v=2"></script>
+  <script>
+    const container = document.getElementById('stars-container');
+    MagicUtils.createStarryBg(container);
+
+    Env.load().then(() => {
+      return i18n.init();
+    });
+  </script>
+</body>
+</html>
