@@ -156,7 +156,7 @@ const MagicUtils = {
         e.preventDefault();
 
         if (!MagicAPI.hasApiKey()) {
-          this.showToast('Please configure your DeepSeek API Key in the .env file 🔑');
+          this.showToast('请在设置中配置 DeepSeek API Key（本地开发模式需要）🔑');
           return;
         }
 

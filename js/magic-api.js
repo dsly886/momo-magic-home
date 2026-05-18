@@ -1,37 +1,57 @@
 /* ===== momo的AI魔法屋 - DeepSeek API 封装 ===== */
+/* 生产环境通过 Vercel Serverless Proxy (/api/chat) 调用，Key 不暴露给浏览器 */
+/* 本地开发需在设置中配置 API Key，直接调用 DeepSeek API */
 
 const MagicAPI = {
-  // 从 localStorage 获取 API Key（.env 中的作为备用）
+  // 从 localStorage 获取本地开发用 API Key
   getApiKey() {
-    return localStorage.getItem('momo_deepseek_api_key') || Env.getApiKey();
+    return localStorage.getItem('momo_deepseek_api_key') || '';
   },
 
-  // 保存 API Key
+  // 保存本地开发用 API Key
   setApiKey(key) {
     localStorage.setItem('momo_deepseek_api_key', key);
   },
 
-  // 检查是否已配置 API Key
+  // 检查是否可调用 API
+  // 生产环境：服务端 Proxy 持有 Key，前端无需配置
+  // 本地开发：需要用户在设置中填入 Key
   hasApiKey() {
+    if (this._isProduction()) return true;
     return !!this.getApiKey();
   },
 
-  // 通用 DeepSeek API 调用
-  async call(messages, options = {}) {
-    const apiKey = this.getApiKey();
-    if (!apiKey) {
-      throw new Error(i18n?.t?.('common.need_api_key') || 'Please configure your DeepSeek API Key in Settings first');
+  _isProduction() {
+    const host = window.location.hostname;
+    return host !== 'localhost' && host !== '127.0.0.1';
+  },
+
+  // === 核心 API 调用 ===
+
+  // 生产环境：通过 Vercel Serverless Proxy
+  async _proxyCall(messages, model, temperature, maxTokens) {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages,
+        options: { model, temperature, maxTokens },
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || `Proxy error (${response.status})`);
     }
 
-    const {
-      model = 'deepseek-v4-flash',
-      temperature = 0.8,
-      maxTokens = 2048,
-    } = options;
+    const data = await response.json();
+    return data.content;
+  },
 
-    const baseUrl = Env.getBaseUrl();
+  // 本地开发：直接调用 DeepSeek API
+  async _directCall(apiKey, baseUrl, messages, model, temperature, maxTokens) {
     const url = `${baseUrl}/v1/chat/completions`;
-    console.log('[momo魔法屋] API 请求:', { url, model, maxTokens });
+    console.log('[momo魔法屋] 本地模式 API 请求:', { url, model, maxTokens });
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -53,6 +73,19 @@ const MagicAPI = {
 
     const data = await response.json();
     return data.choices[0].message.content;
+  },
+
+  // 通用 API 调用（自动选择代理或直连）
+  async call(messages, options = {}) {
+    const apiKey = this.getApiKey();
+    const baseUrl = Env.getBaseUrl();
+    const { model = 'deepseek-v4-flash', temperature = 0.8, maxTokens = 2048 } = options;
+
+    if (apiKey) {
+      return this._directCall(apiKey, baseUrl, messages, model, temperature, maxTokens);
+    }
+
+    return this._proxyCall(messages, model, temperature, maxTokens);
   },
 
   // === 工具专用方法 ===
@@ -171,7 +204,7 @@ ${i18n?.getLangInstruction?.() || ''}`;
 ${i18n?.getLangInstruction?.() || ''}`;
 
     return this.call([
-      { role: 'system', content: '你是一位通晓古今解梦智慧的魔法师，既能理解梦境的神秘象征，也能给出温暖人心的解读。' },
+      { role: 'system', content: '你是一位通晓古今解梦智慧的魔法师，既能理解梦境的神秘象征，也能给出温暖人心的解读' },
       { role: 'user', content: prompt },
     ], { temperature: 0.8, maxTokens: 2048 });
   },
