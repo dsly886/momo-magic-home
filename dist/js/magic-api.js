@@ -27,13 +27,31 @@ const MagicAPI = {
     return host !== 'localhost' && host !== '127.0.0.1';
   },
 
+  // === 动态 Token（防脚本重放） ===
+  _token: null,
+  _tokenPromise: null,
+
+  async _getToken() {
+    if (this._token) return this._token;
+    if (!this._tokenPromise) {
+      this._tokenPromise = fetch('/api/token')
+        .then(r => r.json())
+        .then(d => { this._token = d.token; return d.token; })
+        .catch(() => { this._tokenPromise = null; return null; });
+    }
+    return this._tokenPromise;
+  },
+
   // === 核心 API 调用 ===
 
   // 生产环境：通过 Vercel Serverless Proxy
   async _proxyCall(messages, model, temperature, maxTokens) {
+    const token = await this._getToken();
+    const headers = { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' };
+    if (token) headers['X-Magic-Token'] = token;
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      headers,
       body: JSON.stringify({
         messages,
         options: { model, temperature, maxTokens },

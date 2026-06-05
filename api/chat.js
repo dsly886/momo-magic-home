@@ -1,7 +1,7 @@
 /* ===== momo的AI魔法屋 - DeepSeek API 代理（已加固） ===== */
 
 const DEEPSEEK_BASE_URL = 'https://api.deepseek.com';
-const MAX_REQUESTS_PER_HOUR = 30;
+const MAX_REQUESTS_PER_HOUR = 10;
 const MAX_MESSAGE_LENGTH = 512;
 const MAX_TOKENS = 4096;
 const MAX_MESSAGES_COUNT = 20;
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
   if (isOriginAllowed(origin, host)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, X-Magic-Token');
     res.setHeader('Vary', 'Origin');
   }
 
@@ -102,6 +102,13 @@ export default async function handler(req, res) {
 
   // === CSRF 校验 ===
   if (req.headers['x-requested-with'] !== 'XMLHttpRequest') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  // === 动态 Token 校验（防脚本重放） ===
+  const clientToken = req.headers['x-magic-token'];
+  const serverToken = process.env.MAGIC_API_TOKEN;
+  if (!clientToken || clientToken !== serverToken) {
     return res.status(403).json({ error: 'Forbidden' });
   }
 
