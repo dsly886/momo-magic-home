@@ -1,6 +1,6 @@
 /* ===== momo的AI魔法屋 - DeepSeek API 代理（已加固） ===== */
 
-const DEEPSEEK_BASE_URL = 'https://api.deepseek.com';
+const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com';
 const MAX_REQUESTS_PER_HOUR = 10;
 const MAX_MESSAGE_LENGTH = 512;
 const MAX_TOKENS = 4096;
