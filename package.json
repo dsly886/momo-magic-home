@@ -5,5 +5,8 @@
   "description": "AI魔法主题创意工具集",
   "engines": {
     "node": ">=18.x"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
   }
 }

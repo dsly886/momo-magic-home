@@ -20,7 +20,7 @@ function isOriginAllowed(origin, host) {
   if (!origin) return false;
   const allowed = [
     'momo-magic-home.vercel.app',
-    'momo-magic-house.app',
+    'momomagichome.com',
     'localhost',
     '127.0.0.1',
   ];
