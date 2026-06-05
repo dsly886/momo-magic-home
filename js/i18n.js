@@ -53,27 +53,17 @@ const i18n = {
     this.injectSwitcher();
   },
 
-  // 检测语言：localStorage > IP检测 > navigator.language > 'en'
+  // 检测语言：localStorage > navigator.language > 'en'
   async _detectLang() {
     // 1. localStorage 手动选择
     const stored = localStorage.getItem('momo_lang');
     if (stored && this._supportedLangs.includes(stored)) return stored;
 
-    // 2. IP 检测
-    try {
-      const resp = await fetch('https://ip-api.com/json/?fields=countryCode');
-      const data = await resp.json();
-      const lang = this._countryToLang[data.countryCode];
-      if (lang) return lang;
-    } catch {
-      // IP 检测失败, 继续降级
-    }
-
-    // 3. navigator.language
+    // 2. navigator.language
     const navLang = (navigator.language || '').slice(0, 2);
     if (navLang && this._supportedLangs.includes(navLang)) return navLang;
 
-    // 4. 默认
+    // 3. 默认
     return 'en';
   },
 

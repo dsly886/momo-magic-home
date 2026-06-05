@@ -88,6 +88,13 @@ const MagicUtils = {
     addChar();
   },
 
+  // HTML 转义（防 XSS）
+  escapeHTML(str) {
+    return String(str).replace(/[<>&"']/g, c => ({
+      '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  },
+
   // === Toast 提示 ===
   showToast(message, duration = 2500) {
     const existing = document.querySelector('.toast');
@@ -208,13 +215,21 @@ const MagicUtils = {
         } catch (err) {
           console.error('[momo魔法屋] 错误:', err);
           if (resultContent && resultBox) {
-            resultContent.innerHTML = `<div style="color:#f87171;text-align:center;padding:20px;line-height:2;">
-              <div style="font-size:32px;margin-bottom:8px;">⚠️</div>
-              <div>${err.message}</div>
-              <div style="font-size:13px;color:var(--color-text-dim);margin-top:12px;">
-                ${i18n?.t?.('common.error_check_console') || 'Check the console (F12) for error details'}
-              </div>
-            </div>`;
+            resultContent.textContent = '';
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'color:#f87171;text-align:center;padding:20px;line-height:2;';
+            const icon = document.createElement('div');
+            icon.style.cssText = 'font-size:32px;margin-bottom:8px;';
+            icon.textContent = '⚠️';
+            const msg = document.createElement('div');
+            msg.textContent = err.message;
+            const hint = document.createElement('div');
+            hint.style.cssText = 'font-size:13px;color:var(--color-text-dim);margin-top:12px;';
+            hint.textContent = i18n?.t?.('common.error_check_console') || 'Check the console (F12) for error details';
+            wrapper.appendChild(icon);
+            wrapper.appendChild(msg);
+            wrapper.appendChild(hint);
+            resultContent.appendChild(wrapper);
             resultBox.className = `result-box glow-${glowColor} has-error`;
           }
           this.showToast('❌ ' + err.message);

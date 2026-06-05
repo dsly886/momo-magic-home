@@ -8,8 +8,9 @@ const MagicAPI = {
     return localStorage.getItem('momo_deepseek_api_key') || '';
   },
 
-  // 保存本地开发用 API Key
+  // 保存本地开发用 API Key（生产环境禁止存储）
   setApiKey(key) {
+    if (this._isProduction()) return;
     localStorage.setItem('momo_deepseek_api_key', key);
   },
 
@@ -32,7 +33,7 @@ const MagicAPI = {
   async _proxyCall(messages, model, temperature, maxTokens) {
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
       body: JSON.stringify({
         messages,
         options: { model, temperature, maxTokens },
